@@ -1,6 +1,6 @@
 [![General Assembly Logo](https://camo.githubusercontent.com/1a91b05b8f4d44b5bbfb83abac2b0996d8e26c92/687474703a2f2f692e696d6775722e636f6d2f6b6538555354712e706e67)](https://generalassemb.ly/education/web-development-immersive)
 
-# express-api-template
+# nozama-api
 
 A template for starting projects with `express` as an API. Includes
 authentication and common middlewares.
@@ -33,7 +33,7 @@ Fix any conflicts.
 1.  Unzip and rename the template directory.
 1.  Empty [`README.md`](README.md) and fill with your own content.
 1.  Move into the new project and `git init`.
-1.  Replace all instances of `'express-api-template'` with your app name. This
+1.  Replace all instances of `'nozama-api'` with your app name. This
     includes `package.json`, various debugger configurations, and the MongoDB
     store.
 1.  Install dependencies with `npm install`.
