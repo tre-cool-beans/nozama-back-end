@@ -11,7 +11,7 @@ module.exports = require('lib/wiring/routes')
 .resources('examples')
 
 // Nozama routes
-.resources('products', { only: ['index', 'show'] })
+.resources('products', { only: ['index', 'show', 'create'] })
 
 // users of the app have special requirements
 .post('/sign-up', 'users#signup')

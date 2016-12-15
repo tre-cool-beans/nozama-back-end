@@ -18,9 +18,17 @@ const show = (req, res, next) => {
     .catch(err => next(err));
 };
 
+// Remove this create function, only for testing purposes JOAUFI
+const create = (req, res, next) => {
+  Product.create(product)
+    .then(product => res.json({ product }))
+    .catch(err => next(err));
+}
+
 module.exports = controller({
   index,
   show,
+  create,
 }, { before: [
-  { method: authenticate, except: ['index', 'show'] },
+  { method: authenticate, except: ['index', 'show', 'create'] },
 ], });
