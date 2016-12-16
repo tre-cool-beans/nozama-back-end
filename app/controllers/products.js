@@ -20,10 +20,11 @@ const show = (req, res, next) => {
 
 // Remove this create function, only for testing purposes JOAUFI
 const create = (req, res, next) => {
+  let product = req.body.product;
   Product.create(product)
     .then(product => res.json({ product }))
     .catch(err => next(err));
-}
+};
 
 module.exports = controller({
   index,
