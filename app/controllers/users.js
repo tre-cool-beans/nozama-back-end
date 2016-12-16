@@ -40,6 +40,21 @@ const show = (req, res, next) => {
     .catch(err => next(err));
 };
 
+const updateCart = (req, res, next) => {
+  let search = { _id: req.params.id, _owner: req.currentUser._id };
+  Example.findOne(search)
+    .then(example => {
+      if (!example) {
+        return next();
+      }
+
+      delete req.body._owner;  // disallow owner reassignment.
+      return example.update(req.body.example)
+        .then(() => res.sendStatus(200));
+    })
+    .catch(err => next(err));
+};
+
 const makeErrorHandler = (res, next) =>
   error =>
     error && error.name && error.name === 'ValidationError' ?
@@ -114,6 +129,7 @@ const changepw = (req, res, next) => {
 module.exports = controller({
   index,
   show,
+  updateCart,
   signup,
   signin,
   signout,
