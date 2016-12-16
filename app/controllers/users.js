@@ -40,21 +40,6 @@ const show = (req, res, next) => {
     .catch(err => next(err));
 };
 
-// const updateCart = (req, res, next) => {
-//   let search = { _id: req.params.id, _owner: req.currentUser._id };
-//   User.findOne(search)
-//     .then(user => {
-//       if (!user) {
-//         return next();
-//       }
-//
-//       delete req.body._owner;  // disallow owner reassignment.
-//       return user.update(req.body.user)
-//         .then(() => res.sendStatus(200));
-//     })
-//     .catch(err => next(err));
-// };
-
 const updateCart = (req, res, next) => {
   debug('Updating cart');
   User.findOne({
@@ -77,17 +62,23 @@ const makeErrorHandler = (res, next) =>
 const signup = (req, res, next) => {
   let credentials = req.body.credentials;
   let user = { email: credentials.email, password: credentials.password };
-  getToken().then(token =>
-    user.token = token
-  ).then(() =>
-    new User(user).save()
-  ).then(newUser => {
-    let user = newUser.toObject();
-    delete user.token;
-    delete user.passwordDigest;
-    res.json({ user });
-  }).catch(makeErrorHandler(res, next));
-
+  if(credentials.password===credentials.password_confirmation){
+    getToken().then(token =>
+      user.token = token
+    ).then(() =>
+      new User(user).save()
+    ).then(newUser => {
+      let user = newUser.toObject();
+      delete user.token;
+      delete user.passwordDigest;
+      res.json({ user });
+    })
+    .catch(makeErrorHandler(res, next));
+  }
+  else {
+    let error = {name: 'ValidationError' };
+    makeErrorHandler(res, next)(error);
+  }
 };
 
 const signin = (req, res, next) => {
