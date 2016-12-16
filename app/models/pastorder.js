@@ -16,10 +16,6 @@ const pastOrderSchema = new mongoose.Schema({
     type: Array,
     required: true,
   },
-  purchased_on: {
-    type: Date,
-    required: true,
-  },
   total_price: {
     type: Number,
     required: true,
