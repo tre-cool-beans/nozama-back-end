@@ -10,7 +10,7 @@ const pastOrderSchema = new mongoose.Schema({
   },
   comment: {
     type: String,
-    required: true,
+    default: "Add Comments Here!",
   },
   products: {
     type: Array,
