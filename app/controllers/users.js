@@ -40,19 +40,32 @@ const show = (req, res, next) => {
     .catch(err => next(err));
 };
 
-const updateCart = (req, res, next) => {
-  let search = { _id: req.params.id, _owner: req.currentUser._id };
-  Example.findOne(search)
-    .then(example => {
-      if (!example) {
-        return next();
-      }
+// const updateCart = (req, res, next) => {
+//   let search = { _id: req.params.id, _owner: req.currentUser._id };
+//   User.findOne(search)
+//     .then(user => {
+//       if (!user) {
+//         return next();
+//       }
+//
+//       delete req.body._owner;  // disallow owner reassignment.
+//       return user.update(req.body.user)
+//         .then(() => res.sendStatus(200));
+//     })
+//     .catch(err => next(err));
+// };
 
-      delete req.body._owner;  // disallow owner reassignment.
-      return example.update(req.body.example)
-        .then(() => res.sendStatus(200));
-    })
-    .catch(err => next(err));
+const updateCart = (req, res, next) => {
+  debug('Updating cart');
+  User.findOne({
+    _id: req.params.id,
+    token: req.currentUser.token,
+  }).then(user => {
+    user.cart = req.body.cart;
+    return user.save();
+  }).then((/* user */) =>
+    res.sendStatus(200)
+  ).catch(makeErrorHandler(res, next));
 };
 
 const makeErrorHandler = (res, next) =>
