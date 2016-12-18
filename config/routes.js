@@ -10,10 +10,12 @@ module.exports = require('lib/wiring/routes')
 // standards RESTful routes
 .resources('examples')
 
-// Nozama routes
+// Nozama general resources routes
 .resources('products', { only: ['index', 'show', 'create'] })
-.patch('/users/:id', 'users#updateCart')
 .resources('pastorders', { only: ['index', 'create', 'update', 'destroy'] })
+
+// Nozama explicit routes
+.patch('/update-cart/:id', 'users#updateCart')
 
 // users of the app have special requirements
 .post('/sign-up', 'users#signup')
