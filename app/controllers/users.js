@@ -42,15 +42,21 @@ const show = (req, res, next) => {
 
 const updateCart = (req, res, next) => {
   debug('Updating cart');
+  // Find the user that we want to update
   User.findOne({
     _id: req.params.id,
     token: req.currentUser.token,
   }).then(user => {
-    user.cart = req.body.cart;
+    // Push the new cart object onto the found user's cart
+    user.cart.push(req.body);
+    // Save the new user data in our database
     return user.save();
-  }).then((/* user */) =>
-    res.sendStatus(200)
-  ).catch(makeErrorHandler(res, next));
+  }).then((user) => {
+    // Send the updated user data back for front-end data
+    // updating. NOTE: Would like to just send the cart back
+    // but get linter error's that 'user.cart' is not defined.
+    res.json({ user });
+  }).catch(makeErrorHandler(res, next));
 };
 
 const makeErrorHandler = (res, next) =>
