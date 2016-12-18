@@ -28,6 +28,12 @@ const getToken = () =>
 
 const userFilter = { passwordDigest: 0, token: 0 };
 
+const makeErrorHandler = (res, next) =>
+  error =>
+    error && error.name && error.name === 'ValidationError' ?
+      res.status(400).json({ error }) :
+    next(error);
+
 const index = (req, res, next) => {
   User.find({}, userFilter)
     .then(users => res.json({ users }))
@@ -52,18 +58,11 @@ const updateCart = (req, res, next) => {
     // Save the new user data in our database
     return user.save();
   }).then((user) => {
-    // Send the updated user data back for front-end data
-    // updating. NOTE: Would like to just send the cart back
-    // but get linter error's that 'user.cart' is not defined.
-    res.json({ user });
+    // Send just the user's cart back for frontend data update
+    let cart = user.cart;
+    res.json({ cart });
   }).catch(makeErrorHandler(res, next));
 };
-
-const makeErrorHandler = (res, next) =>
-  error =>
-    error && error.name && error.name === 'ValidationError' ?
-      res.status(400).json({ error }) :
-    next(error);
 
 const signup = (req, res, next) => {
   let credentials = req.body.credentials;
