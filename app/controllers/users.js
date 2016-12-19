@@ -66,7 +66,7 @@ const createCartProduct = (req, res, next) => {
 
 const updateCartProduct = (req, res, next) => {
   debug('Update Cart Product');
-  // Get the _id of the CartProduct we wnat to modify
+  // Get the _id of the CartProduct we want to PATCH
   let cart_product_id = req.body._id;
   // Delete the _id key of the request so we don't
   // accidentily PATCH it when we update CartProduct
@@ -95,7 +95,25 @@ const updateCartProduct = (req, res, next) => {
 };
 
 const destroyCartProduct = (req, res, next) => {
+  debug('Destroy Cart Product');
+  // Get the _id of the CartProduct we want to DELETE
+  let cart_product_id = req.body._id;
 
+  User.findOne({
+    _id: req.params.id,
+    token: req.currentUser.token,
+  }).then(user => {
+    // Find the CartProduct in the user's cart
+    let cart_product = user.cart.id(cart_product_id);
+    // Remove the CartProduct
+    cart_product.remove();
+    // Save the new user cart data in our database
+    return user.save();
+  }).then((user) => {
+    // Send the user's updated cart back for frontend data update
+    let cart = user.cart;
+    res.json({ cart });
+  }).catch(makeErrorHandler(res, next));
 };
 
 const signup = (req, res, next) => {
