@@ -12,12 +12,17 @@ module.exports = require('lib/wiring/routes')
 
 // Nozama general resources routes
 .resources('products', { only: ['index', 'show', 'create'] })
-.resources('pastorders', { only: ['index', 'create', 'update', 'destroy'] })
 
 // Nozama explicit routes
+
+// Cart
 .post('/cart/:id', 'users#createCartProduct')
 .patch('/cart/:id', 'users#updateCartProduct')
 .delete('/cart/:id', 'users#destroyCartProduct')
+
+// PastOrders
+.get('/pastorders', 'pastorders#index')
+.post('/pastorders', 'pastorders#create')
 
 // users of the app have special requirements
 .post('/sign-up', 'users#signup')
