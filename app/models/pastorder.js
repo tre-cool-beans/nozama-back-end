@@ -12,7 +12,7 @@ const pastOrderSchema = new mongoose.Schema({
     type: String,
     default: "Add Comments Here!",
   },
-  products: {
+  cart: {
     type: Array,
     required: true,
   },
