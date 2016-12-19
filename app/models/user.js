@@ -4,34 +4,7 @@ const bcrypt = require('bcrypt');
 const mongoose = require('mongoose');
 const uniqueValidator = require('mongoose-unique-validator');
 
-const cartProductSchema = new mongoose.Schema({
-  title: {
-    type: String,
-    required: true,
-  },
-  description: {
-    type: String,
-    required: true,
-  },
-  price: {
-    type: Number,
-    required: true,
-  },
-  size: {
-    type: String,
-    required: true,
-  },
-  image_url : {
-    type: String,
-    required: true,
-  },
-  quantity: {
-    type: Number,
-    required: true,
-  },
-}, {
-  toJSON: { virtuals: true },
-});
+const cartProductSchema = mongoose.model('CartProduct').schema;
 
 const userSchema = new mongoose.Schema({
   email: {
