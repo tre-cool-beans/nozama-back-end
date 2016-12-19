@@ -15,7 +15,9 @@ module.exports = require('lib/wiring/routes')
 .resources('pastorders', { only: ['index', 'create', 'update', 'destroy'] })
 
 // Nozama explicit routes
-.patch('/update-cart/:id', 'users#updateCart')
+.post('/cart/:id', 'users#createCartProduct')
+.patch('/cart/:id', 'users#updateCartProduct')
+.delete('/cart/:id', 'users#destroyCartProduct')
 
 // users of the app have special requirements
 .post('/sign-up', 'users#signup')
