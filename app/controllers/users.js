@@ -46,8 +46,8 @@ const show = (req, res, next) => {
     .catch(err => next(err));
 };
 
-const updateCart = (req, res, next) => {
-  debug('Updating cart');
+const createCartProduct = (req, res, next) => {
+  debug('Create Cart Product');
   // Find the user that we want to update
   User.findOne({
     _id: req.params.id,
