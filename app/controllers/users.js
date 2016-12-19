@@ -64,6 +64,40 @@ const createCartProduct = (req, res, next) => {
   }).catch(makeErrorHandler(res, next));
 };
 
+const updateCartProduct = (req, res, next) => {
+  debug('Update Cart Product');
+  // Get the _id of the CartProduct we wnat to modify
+  let cart_product_id = req.body._id;
+  // Delete the _id key of the request so we don't
+  // accidentily PATCH it when we update CartProduct
+  delete req.body._id;
+  // Get all the keys of the PATCH request body.
+  let req_keys = Object.keys(req.body);
+
+  User.findOne({
+    _id: req.params.id,
+    token: req.currentUser.token,
+  }).then(user => {
+    // Find the CartProduct in the user's cart
+    let cart_product = user.cart.id(cart_product_id);
+    // For every request key, PATCH the related
+    // CartProduct key with the new value
+    for (let i = 0; i < req_keys.length; i++) {
+        cart_product[req_keys[i]] = req.body[req_keys[i]];
+    }
+    // Save the new user cart data in our database
+    return user.save();
+  }).then((user) => {
+    // Send the user's updated cart back for frontend data update
+    let cart = user.cart;
+    res.json({ cart });
+  }).catch(makeErrorHandler(res, next));
+};
+
+const destroyCartProduct = (req, res, next) => {
+
+};
+
 const signup = (req, res, next) => {
   let credentials = req.body.credentials;
   let user = { email: credentials.email, password: credentials.password };
@@ -138,7 +172,9 @@ const changepw = (req, res, next) => {
 module.exports = controller({
   index,
   show,
-  updateCart,
+  createCartProduct,
+  updateCartProduct,
+  destroyCartProduct,
   signup,
   signin,
   signout,
