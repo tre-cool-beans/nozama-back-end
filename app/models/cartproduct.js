@@ -32,6 +32,10 @@ const cartProductSchema = new mongoose.Schema({
   toJSON: { virtuals: true },
 });
 
+cartProductSchema.virtual('line_price').get(function length() {
+  return this.price * this.quantity;
+});
+
 const CartProduct = mongoose.model('CartProduct', cartProductSchema);
 
 module.exports = CartProduct;
