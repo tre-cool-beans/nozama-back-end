@@ -20,6 +20,9 @@ module.exports = require('lib/wiring/routes')
 .patch('/cart/:id', 'users#updateCartProduct')
 .delete('/cart/:id', 'users#destroyCartProduct')
 
+// Stripe Card Charge
+.post('/stripe', 'users#chargeCard')
+
 // PastOrders
 .get('/pastorders', 'pastorders#index')
 .post('/pastorders', 'pastorders#create')

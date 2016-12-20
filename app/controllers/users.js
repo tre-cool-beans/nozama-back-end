@@ -14,6 +14,9 @@ const HttpError = require('lib/wiring/http-error');
 
 const MessageVerifier = require('lib/wiring/message-verifier');
 
+// Get Stripe; careful with those secrets!
+const stripe = require('stripe')(process.env.STRIPE_SECRET_KEY);
+
 const encodeToken = (token) => {
   const mv = new MessageVerifier('secure-token', process.env.SECRET_KEY);
   return mv.generate(token);
@@ -45,6 +48,35 @@ const show = (req, res, next) => {
     .then(user => user ? res.json({ user }) : next())
     .catch(err => next(err));
 };
+
+// For now I'm putting Stripe charging in here but it, as well
+// should be stripped out and put into it's own file.
+// Seperation of concerns!
+
+const chargeCard = (req, res, next) => {
+  return new Promise((resolve, reject) => {
+    stripe.charges.create({
+      amount: req.body.amount,
+      currency: "usd",
+      source: req.body.token,
+      description: "Nozama Charge"
+    }, function(err, charge) {
+      if (err && err.type === 'StripeCardError') {
+        reject(err);
+      } else {
+        resolve(charge);
+      }
+    });
+  })
+  .then(charge => {
+    console.log(charge);
+    res.json({ charge });
+  })
+  .catch(err => next(err));
+};
+
+// All these CartProduct actions should be stripped and moved
+// into their own file; users.js is getting pretty hefty
 
 const createCartProduct = (req, res, next) => {
   debug('Create Cart Product');
@@ -190,6 +222,7 @@ const changepw = (req, res, next) => {
 module.exports = controller({
   index,
   show,
+  chargeCard,
   createCartProduct,
   updateCartProduct,
   destroyCartProduct,
