@@ -148,6 +148,31 @@ const destroyCartProduct = (req, res, next) => {
   }).catch(makeErrorHandler(res, next));
 };
 
+const emptyCart = (req, res, next) => {
+  debug('Empty Cart Product');
+
+  User.findOne({
+    _id: req.params.id,
+    token: req.currentUser.token,
+  }).then(user => {
+    // Get the user's cart
+    let cart = user.cart;
+    // Remove every CartProduct in the user's cart
+    // Have to move from the end of the array to the
+    // beginning because the length of the array changes
+    // as elements are removed.
+    for (let i = cart.length - 1; i >= 0; i--) {
+      cart[i].remove();
+    }
+    // Save the new user cart data in our database
+    return user.save();
+  }).then((user) => {
+    // Send the user's updated cart back for frontend data update
+    let cart = user.cart;
+    res.json({ cart });
+  }).catch(makeErrorHandler(res, next));
+};
+
 const signup = (req, res, next) => {
   let credentials = req.body.credentials;
   let user = { email: credentials.email, password: credentials.password };
@@ -226,6 +251,7 @@ module.exports = controller({
   createCartProduct,
   updateCartProduct,
   destroyCartProduct,
+  emptyCart,
   signup,
   signin,
   signout,
