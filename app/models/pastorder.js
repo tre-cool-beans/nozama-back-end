@@ -8,12 +8,16 @@ const pastOrderSchema = new mongoose.Schema({
     ref: 'User',
     required: true,
   },
-  comment: {
-    type: String,
-    default: "Add Comments Here!",
-  },
   cart: {
     type: Array,
+    required: true,
+  },
+  shipping: {
+    type: Number,
+    required: true,
+  },
+  tax: {
+    type: Number,
     required: true,
   },
   total_price: {
