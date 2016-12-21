@@ -69,7 +69,6 @@ const chargeCard = (req, res, next) => {
     });
   })
   .then(charge => {
-    console.log(charge);
     res.json({ charge });
   })
   .catch(err => next(err));
@@ -79,7 +78,6 @@ const chargeCard = (req, res, next) => {
 // into their own file; users.js is getting pretty hefty
 
 const createCartProduct = (req, res, next) => {
-  debug('Create Cart Product');
   // Find the user that we want to update
   User.findOne({
     _id: req.params.id,
@@ -97,7 +95,6 @@ const createCartProduct = (req, res, next) => {
 };
 
 const updateCartProduct = (req, res, next) => {
-  debug('Update Cart Product');
   // Get the _id of the CartProduct we want to PATCH
   let cart_product_id = req.body._id;
   // Delete the _id key of the request so we don't
@@ -127,7 +124,6 @@ const updateCartProduct = (req, res, next) => {
 };
 
 const destroyCartProduct = (req, res, next) => {
-  debug('Destroy Cart Product');
   // Get the _id of the CartProduct we want to DELETE
   let cart_product_id = req.body._id;
 
@@ -149,7 +145,6 @@ const destroyCartProduct = (req, res, next) => {
 };
 
 const emptyCart = (req, res, next) => {
-  debug('Empty Cart Product');
 
   User.findOne({
     _id: req.params.id,
@@ -229,7 +224,6 @@ const signout = (req, res, next) => {
 };
 
 const changepw = (req, res, next) => {
-  debug('Changing password');
   User.findOne({
     _id: req.params.id,
     token: req.currentUser.token,
