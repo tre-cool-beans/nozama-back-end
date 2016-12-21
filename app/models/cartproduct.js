@@ -13,11 +13,11 @@ const cartProductSchema = new mongoose.Schema({
   },
   price: {
     type: Number,
-    required: true,
+    min: [1, 'Product has to be at least $1'],
   },
   size: {
     type: String,
-    required: true,
+    enum: ['XXS', 'XS', 'S', 'M', 'L', 'XL', 'XXL'],
   },
   image_url : {
     type: String,
@@ -26,6 +26,8 @@ const cartProductSchema = new mongoose.Schema({
   quantity: {
     type: Number,
     default: 1,
+    min: [1, 'Must have at least 1 of product'],
+    max: [10, 'Cannot have more than 10 of product'],
   },
 }, {
   timestamps: true,

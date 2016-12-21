@@ -11,7 +11,7 @@ module.exports = require('lib/wiring/routes')
 .resources('examples')
 
 // Nozama general resources routes
-.resources('products', { only: ['index', 'show', 'create'] })
+.resources('products', { only: ['index', 'show'/*, 'create'*/] })
 
 // Nozama explicit routes
 
