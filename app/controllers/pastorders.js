@@ -8,7 +8,7 @@ const authenticate = require('./concerns/authenticate');
 
 const index = (req, res, next) => {
   let search = { _owner: req.currentUser._id };
-  PastOrder.find(search)
+  PastOrder.find(search).sort({createdAt: -1})
     .then(pastorders => res.json({ pastorders }))
     .catch(err => next(err));
 };
