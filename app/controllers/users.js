@@ -61,7 +61,7 @@ const chargeCard = (req, res, next) => {
       source: req.body.token,
       description: "Nozama Charge"
     }, function(err, charge) {
-      if (err && err.type === 'StripeCardError') {
+      if (err /*&& err.type === 'StripeCardError'*/) {
         reject(err);
       } else {
         resolve(charge);
